@@ -1,15 +1,13 @@
 {
   "name": "sl-ai-server",
   "version": "1.0.0",
+  "description": "Servidor SL-AI para Second Life usando Hugging Face Inference API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "express": "^5.1.0"
+    "axios": "^1.6.7",
+    "express": "^4.18.2"
   }
 }
