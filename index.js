@@ -12,7 +12,7 @@ async function consultarIA(prompt) {
     const response = await axios.post(
       'https://router.huggingface.co/v1/chat/completions',
       {
-        model: 'openchat/openchat-3.5',
+        model: 'HuggingFaceH4/zephyr-7b-beta',
         messages: [
           {
             role: 'system',
@@ -53,5 +53,5 @@ app.post('/', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`🚀 SL-AI activo con modelo OpenChat (puerto ${port})`);
+  console.log(`🚀 SL-AI activo con modelo Zephyr (puerto ${port})`);
 });
