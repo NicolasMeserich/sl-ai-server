@@ -3,7 +3,7 @@ const axios = require('axios');
 const app = express();
 
 const port = 3000;
-const HF_TOKEN = process.env.HF_TOKEN; // Token de Hugging Face cargado en Render
+const HF_TOKEN = process.env.HF_TOKEN;
 
 app.use(express.json());
 
@@ -40,9 +40,9 @@ async function consultarIA(prompt) {
   }
 }
 
-app.post('/', async (req, res) => {
+app.post('/sl', async (req, res) => {
   const mensaje = req.body.message;
-  if (!mensaje) return res.status(400).json({ error: 'Falta el campo \"message\"' });
+  if (!mensaje) return res.status(400).json({ error: 'Falta el campo "message"' });
 
   try {
     const respuestaIA = await consultarIA(mensaje);
