@@ -1,18 +1,60 @@
 const express = require('express');
+const axios = require('axios');
 const app = express();
 
 const port = 3000;
+const HF_TOKEN = process.env.HF_TOKEN;
 
 app.use(express.json());
 
+// Función que consulta a Hugging Face con el modelo Mistral
+async function consultarIA(prompt) {
+  try {
+    const response = await axios.post(
+      'https://router.huggingface.co/v1/chat/completions',
+      {
+        model: 'mistralai/Mistral-7B-Instruct-v0.2',
+        messages: [
+          {
+            role: 'system',
+            content: 'Sos un asistente experto en scripting de Second Life, especializado en HUDs, UUIDs, sincronización musical y sistemas interregionales.'
+          },
+          {
+            role: 'user',
+            content: prompt
+          }
+        ],
+        stream: false
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${HF_TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    return response.data.choices[0].message.content;
+  } catch (error) {
+    console.error('❌ Error al consultar Hugging Face:', error.response?.data || error.message);
+    return 'Error al conectar con la IA en la nube';
+  }
+}
+
+// Endpoint raíz que recibe solicitudes desde SL
 app.post('/', async (req, res) => {
   const mensaje = req.body.message;
   if (!mensaje) return res.status(400).json({ error: 'Falta el campo "message"' });
 
-  // Respuesta simulada para testeo
-  res.json({ response: "✅ Conexión exitosa. El HUD está hablando con el servidor." });
+  try {
+    const respuestaIA = await consultarIA(mensaje);
+    res.json({ response: respuestaIA });
+  } catch (error) {
+    res.status(500).json({ error: 'Error al conectar con la IA en la nube' });
+  }
 });
 
+// Activación del servidor
 app.listen(port, () => {
-  console.log(`🚀 SL-AI de prueba activo en Render (puerto ${port})`);
+  console.log(`🚀 SL-AI activo con modelo Mistral (puerto ${port})`);
 });
