@@ -40,7 +40,7 @@ async function consultarIA(prompt) {
   }
 }
 
-app.post('/sl', async (req, res) => {
+app.post('/', async (req, res) => {
   const mensaje = req.body.message;
   if (!mensaje) return res.status(400).json({ error: 'Falta el campo "message"' });
 
